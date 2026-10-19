@@ -1,6 +1,6 @@
 /* This service worker owns only /soundboard/ and its own cache. */
-var CACHE = 'nosa-soundboard-v7';
-var FILES = ['./', './index.html', './style.css?v=7', './synth.js?v=7', './layout.js?v=7', './audio-session.js?v=7', './voice-worker.js?v=7', './app.js?v=7', './icon.svg', './apple-touch-icon.png', './manifest.webmanifest', './audio/session.wav'];
+var CACHE = 'nosa-soundboard-v8';
+var FILES = ['./', './index.html', './style.css?v=8', './synth.js?v=8', './layout.js?v=8', './audio-session.js?v=8', './voice-worker.js?v=8', './app.js?v=8', './icon.svg', './apple-touch-icon.png', './manifest.webmanifest', './audio/session.wav'];
 for (var i = 1; i <= 16; i++) FILES.push('./audio/' + String(i).padStart(2, '0') + '.wav');
 self.addEventListener('install', function (event) { event.waitUntil(caches.open(CACHE).then(function (cache) { return cache.addAll(FILES); }).then(function () { return self.skipWaiting(); })); });
 self.addEventListener('activate', function (event) { event.waitUntil(caches.keys().then(function (names) { return Promise.all(names.filter(function (name) { return name.indexOf('nosa-soundboard-') === 0 && name !== CACHE; }).map(function (name) { return caches.delete(name); })); }).then(function () { return self.clients.claim(); }).then(function () { return self.clients.matchAll(); }).then(function (clients) { clients.forEach(function (client) { client.postMessage('OFFLINE_READY'); }); })); });
