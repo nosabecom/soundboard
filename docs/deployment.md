@@ -2,7 +2,9 @@
 
 The app lives in the private GitHub repository `nosabecom/soundboard` and the Vercel project `soundboard` (team `nomokaro625-9385s-projects`). Its production build serves `dist/soundboard` at `/soundboard/`.
 
-The existing `portfolio` Vercel project owns `nosa.dev`. A project-level external rewrite forwards `/soundboard/:path*` to the soundboard project's production alias, keeping the path. No portfolio content or build needs to change. The route applies to future portfolio deployments too.
+The existing `portfolio` Vercel project owns `nosa.dev`. A project-level external rewrite matches `^(/soundboard(?:/.*)?)$` and forwards to `https://soundboard-puce.vercel.app$1`, keeping the path. No portfolio content or build needs to change. The route applies to future portfolio deployments too.
+
+The production alias is `https://soundboard-puce.vercel.app`. The published route is named `Soundboard` with ID `f7712d46-440b-4d0d-a34b-9ea660a6e6e4`.
 
 Route operations:
 

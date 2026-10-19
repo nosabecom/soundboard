@@ -1,0 +1,7 @@
+dist/
+.venv/
+.env*
+node_modules/
+.git/
+docs/
+tests/
