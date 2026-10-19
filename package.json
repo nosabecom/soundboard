@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node --check public/app.js && node --check public/synth.js && node --check public/sw.js && node --check public/layout.js && node --test tests/*.test.mjs",
+    "check": "node --check public/app.js && node --check public/synth.js && node --check public/sw.js && node --check public/layout.js && node --check public/audio-session.js && node --test tests/*.test.mjs",
     "preview": "node scripts/serve.mjs dist"
   }
 }

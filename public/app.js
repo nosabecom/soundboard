@@ -2,6 +2,7 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); }, synth = window.SoundboardSynth, model = window.SoundboardLayout;
   var stored; try { stored = JSON.parse(localStorage.getItem('nosa-soundboard-v2') || '{}'); } catch (_) {}
+  var audioSession = window.SoundboardAudioSession.create(navigator, document);
   var state = model.normalize(stored), context = null, bus = null, reverb = null, impulse = null, buffers = {}, sources = new Set(), loadPromise = null;
   var keys = Array.from(new Set('1234qwerasdfzxcv567890tyuiopghjklbnm-=[];,.'.split('')));
   var colors = { drums:'#edb695', piano:'#acc3ed', electric:'#c4ace8', organ:'#98cecc', synth:'#eca995', keys:'#c6d29f', earshot:'#d9a2bb' };
@@ -9,7 +10,7 @@
   var take = [], recording = false, recordStart = 0, takeLength = 0, recordFrame = null, looping = false, loopTimer = null, nextLoop = 0, visualTimers = new Set(), hitTimers = {}, exporting = false, editing = false, editorIndex = null, focusBeforeEditor = null, audioStarting = null;
   function save() { try { localStorage.setItem('nosa-soundboard-v2', JSON.stringify(state)); } catch (_) { notify('Device storage is full. This layout will last for this session.'); } }
   var voiceWorker=null, warmed={}, pendingVoices=new Set();
-  try { voiceWorker=new Worker('./voice-worker.js'); voiceWorker.onmessage=function(event){var voice=event.data,key=voice.bank+':'+voice.index;pendingVoices.delete(key);warmed[key]=voice; if(context) bufferFor(voice.bank,voice.index);}; voiceWorker.onerror=function(){voiceWorker.terminate();voiceWorker=null;pendingVoices.clear();}; } catch(_) {}
+  try { voiceWorker=new Worker('./voice-worker.js?v=7'); voiceWorker.onmessage=function(event){var voice=event.data,key=voice.bank+':'+voice.index;pendingVoices.delete(key);warmed[key]=voice; if(context) bufferFor(voice.bank,voice.index);}; voiceWorker.onerror=function(){voiceWorker.terminate();voiceWorker=null;pendingVoices.clear();}; } catch(_) {}
   function warmBoard(){if(!voiceWorker)return;state.boards[state.mode].slice(0,state.size*state.size).forEach(function(pad){var key=pad.bank+':'+pad.index;if(pad.bank==='earshot'||warmed[key]||(buffers[pad.bank]&&buffers[pad.bank][pad.index])||pendingVoices.has(key))return;pendingVoices.add(key);voiceWorker.postMessage({bank:pad.bank,index:pad.index});});}
   var noticeTimer;
   function notify(message) { $('notice').textContent = message; clearTimeout(noticeTimer); if (message) noticeTimer = setTimeout(function () { $('notice').textContent = ''; }, 6500); }
@@ -32,9 +33,10 @@
   function createImpulse(ctx) { var buffer = ctx.createBuffer(2, Math.floor(ctx.sampleRate * .85), ctx.sampleRate), rng = 123; for (var c = 0; c < 2; c++) { var data = buffer.getChannelData(c); for (var i = 0; i < data.length; i++) { rng = (Math.imul(rng,1664525)+1013904223)|0; data[i] = ((rng>>>0)/4294967296*2-1) * Math.pow(1-i/data.length,3); } } return buffer; }
   function outputChain(ctx) { var master = ctx.createGain(), limiter = ctx.createDynamicsCompressor(), room = ctx.createConvolver(); master.gain.value = .72; limiter.threshold.value = -6; limiter.knee.value = 6; limiter.ratio.value = 12; limiter.attack.value = .002; limiter.release.value = .12; master.connect(limiter); limiter.connect(ctx.destination); room.buffer = impulse || createImpulse(ctx); room.connect(master); return { bus: master, room: room }; }
   function unlock() {
+    audioSession.activate();
     var Audio = window.AudioContext || window.webkitAudioContext;
     if (!Audio) return Promise.reject(new Error('Web Audio unavailable'));
-    if (!context) { context = new Audio({latencyHint:'interactive'}); impulse = createImpulse(context); var chain = outputChain(context); bus = chain.bus; reverb = chain.room; context.onstatechange = function () { var active = context.state === 'running'; $('power').classList.toggle('on',active); $('power-label').textContent = active ? 'Audio on' : 'Resume audio'; }; }
+    if (!context) { context = new Audio({latencyHint:'interactive'}); impulse = createImpulse(context); var chain = outputChain(context); bus = chain.bus; reverb = chain.room; context.onstatechange = function () { var active = context.state === 'running'; $('power').classList.toggle('on',active); $('power-label').textContent = active ? 'Test audio' : 'Resume audio'; }; }
     var resume = context.resume();
     var silent = context.createBufferSource(); silent.buffer = context.createBuffer(1,1,22050); silent.connect(context.destination); silent.start(0);
     return Promise.resolve(resume);
@@ -95,7 +97,12 @@
     if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
     var slot = keys.indexOf(event.key.toLowerCase()); if (slot>=0 && slot<state.size*state.size) { event.preventDefault(); hit(slot); } if (event.key==='Escape') stopAll();
   });
-  $('power').addEventListener('click',function () { unlock().then(function () { if (state.mode==='earshot') return loadEffects(); }).catch(function () { notify('Audio could not start. Tap to retry.'); }); });
+  $('power').addEventListener('click',function () { unlock().then(function () {
+    if (state.volume === 0) { notify('Volume is at 0%. Raise the soundboard volume to hear it.'); return; }
+    // An audible confirmation tests the output, rather than just context.state.
+    play({bank:'keys',index:36,board:state.mode,slot:-1,pitch:0,volume:Math.min(state.volume,.5),room:0});
+    if (state.mode==='earshot') return loadEffects();
+  }).catch(function () { notify('Audio could not start. Tap to retry.'); }); });
   $('mode').addEventListener('change',function () { setMode(this.value); });
   $('previous-mode').addEventListener('click',function () { setMode(model.modes[(model.modes.indexOf(state.mode)+model.modes.length-1)%model.modes.length]); });
   $('next-mode').addEventListener('click',function () { setMode(model.modes[(model.modes.indexOf(state.mode)+1)%model.modes.length]); });
@@ -125,7 +132,7 @@
   });
   $('demo').addEventListener('click',function () { unlock().then(function () { stopAll(); editMode(false); setMode('drums'); var pattern=[[0,0],[0,2],[1,2],[2,1],[2,2],[3,2],[3.5,2],[4,0],[4,2],[5,2],[6,1],[6,2],[7,3],[7.5,8],[8,0],[8,2],[9,2],[10,1],[10,2],[11,2],[11.5,2],[12,0],[12,2],[13,2],[14,1],[14,2],[15,3]],start=context.currentTime+.05; pattern.forEach(function (item) { play({bank:'drums',index:item[1],board:'drums',slot:item[1],pitch:state.pitch,volume:state.volume*(item[1]===2?.65:1),room:state.room},start+item[0]*.25); }); }).catch(function () { notify('Enable audio to try the beat.'); }); });
   $('help-button').addEventListener('click',function () { var open=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded',String(!open)); $('help').hidden=open; this.querySelector('span').textContent=open?'+':'−'; });
-  document.addEventListener('visibilitychange',function () { if (document.hidden) stopAll(); }); window.addEventListener('pagehide',stopAll);
+  document.addEventListener('visibilitychange',function () { if (document.hidden) { stopAll(); audioSession.pause(); } }); window.addEventListener('pagehide',function () { stopAll(); audioSession.pause(); });
   $('volume-knob').style.setProperty('--rotation',(state.volume*270-135)+'deg'); $('pitch-knob').style.setProperty('--rotation',(state.pitch/12*135)+'deg'); $('volume').value=state.volume*100; $('volume-value').textContent=Math.round(state.volume*100)+'%'; $('pitch').value=state.pitch; $('pitch-value').textContent=(state.pitch>0?'+':'')+state.pitch+' st'; $('room').value=state.room*100; $('room-value').textContent=Math.round(state.room*100)+'%'; renderPads(); recordingUI();
   if ('serviceWorker' in navigator && location.hostname!=='localhost' && location.hostname!=='127.0.0.1') { navigator.serviceWorker.addEventListener('message',function (event) { if (event.data==='OFFLINE_READY') offlineReady(); }); navigator.serviceWorker.register('./sw.js',{scope:'./'}).then(function (registration) { if (registration.active) registration.active.postMessage('CHECK_OFFLINE'); }).catch(function () { $('offline-status').textContent='ONLINE ONLY'; }); } else $('offline-status').textContent='ONLINE ONLY';
   function offlineReady() { $('offline-status').innerHTML='<span class="tiny-dot"></span> OFFLINE READY'; $('offline-status').classList.add('ready'); }

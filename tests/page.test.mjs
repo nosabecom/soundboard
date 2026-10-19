@@ -10,6 +10,6 @@ test('page IDs are unique and all application element references exist', () => {
 });
 test('all files in the offline shell exist and are inside the app scope', () => {
   const sw=fs.readFileSync('public/sw.js','utf8');
-  for (const match of sw.matchAll(/'\.\/([^']+)'/g)) assert.ok(fs.existsSync('public/'+match[1]),match[1]);
+  for (const match of sw.matchAll(/'\.\/([^']+)'/g)) assert.ok(fs.existsSync('public/'+match[1].split('?')[0]),match[1]);
   assert.ok(sw.includes("url.pathname.indexOf(scope.pathname) !== 0"));
 });

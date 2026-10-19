@@ -13,7 +13,7 @@ A touch-first, dark soundboard for iPad and desktop, inspired by physical percus
 - Device-local layout/settings persistence. Recordings are held in memory until downloaded; reloading clears the take.
 - Offline PWA, scoped to `/soundboard/`. On iPad: Safari → Share → Add to Home Screen. Wait for **OFFLINE READY** before going offline.
 
-Tap **Enable audio** once. Play a pad directly to enable audio automatically. Open **Edit pads**, select a pad, choose an instrument and sound, and save. **Settings** changes the note layout in the active instrument; mixed-in instruments remain assigned. **Reset this mode** restores the current preset's layout.
+Tap **Enable audio** once to play a check tone; the same button becomes **Test audio**. On iPad, the app requests the playback audio session so Silent Mode does not mute the instrument. Older iPad browsers use a silent media-channel fallback while the app is open. Play a pad directly to enable audio automatically. Open **Edit pads**, select a pad, choose an instrument and sound, and save. **Settings** changes the note layout in the active instrument; mixed-in instruments remain assigned. **Reset this mode** restores the current preset's layout.
 
 All instrument voices are one-shot synthesized sounds, including the piano approximations. They do not require a server, microphone, or API key. The Earshot WAVs are committed assets; provenance and regeneration instructions are in [docs/sounds.md](docs/sounds.md). Synthesized voices are warmed in a worker so interaction stays responsive. iPad layouts are checked in responsive browser emulation; Safari/device audio behavior still depends on the device volume and audio policies.
 
@@ -35,4 +35,4 @@ Development serves `http://localhost:5173/soundboard/`. The dependency-free buil
 
 The private repository is `nosabecom/soundboard`, connected to the separate Vercel `soundboard` project. Vercel builds with `pnpm build`. The portfolio project's routing rule proxies `/soundboard` and its descendants to the soundboard project's stable production domain, preserving the path. This keeps the source private while the playable website is public and leaves portfolio source untouched.
 
-Routing details are in [docs/deployment.md](docs/deployment.md). Bump the app cache version in `public/sw.js` whenever shipping asset changes. The service worker only handles `/soundboard/` and only deletes caches prefixed `nosa-soundboard-`.
+Routing details are in [docs/deployment.md](docs/deployment.md). Bump the cache version in `public/sw.js` and keep the `?v=` markers in HTML, worker imports, and its precache list in sync when shipping asset changes. The service worker only handles `/soundboard/` and only deletes caches prefixed `nosa-soundboard-`.

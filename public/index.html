@@ -11,10 +11,11 @@
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./style.css">
-  <script defer src="./synth.js"></script>
-  <script defer src="./layout.js"></script>
-  <script defer src="./app.js"></script>
+  <link rel="stylesheet" href="./style.css?v=7">
+  <script defer src="./synth.js?v=7"></script>
+  <script defer src="./layout.js?v=7"></script>
+  <script defer src="./audio-session.js?v=7"></script>
+  <script defer src="./app.js?v=7"></script>
 </head>
 <body>
   <div class="page">
@@ -32,7 +33,7 @@
         <div class="mixer"><label for="volume"><span class="knob" id="volume-knob" aria-hidden="true"></span>VOLUME <input id="volume" type="range" min="0" max="100" value="75"><output id="volume-value" for="volume">75%</output></label><label for="pitch"><span class="knob" id="pitch-knob" aria-hidden="true"></span>PITCH <input id="pitch" type="range" min="-12" max="12" value="0"><output id="pitch-value" for="pitch">0 st</output></label><button id="demo" class="demo"><span aria-hidden="true">▷</span> Try a beat</button></div>
       </section>
       <div class="under-deck"><p class="shortcut-reference">1234 / QWER / ASDF / ZXCV</p><button id="help-button" aria-expanded="false" aria-controls="help">Help <span>+</span></button></div>
-      <section id="help" class="help" hidden><div><h2>A tiny studio. Anywhere.</h2><p>Tap a few pads at once or use <b>1234 / QWER / ASDF / ZXCV</b>. Use the arrows to cycle through seven instruments. Choose a grid from 2×2 to 8×8. On compact screens, swipe larger grids sideways. In Edit pads, tap any pad to assign another instrument or sound.</p></div><div><h2>Catch a happy accident.</h2><p>Press Record, play up to 30 seconds, then press Record again. Loop your take or save it as a WAV. Volume, pitch, and room settings are captured with each hit. Settings lets you choose a root note, scale, and octave for pitched instruments.</p></div><div><h2>Keep it in your pocket.</h2><p>On your iPad, tap Share → Add to Home Screen. After the offline indicator says ready, the sounds work without a connection. If it’s silent, enable audio and check your volume and silent switch.</p></div></section>
+      <section id="help" class="help" hidden><div><h2>A tiny studio. Anywhere.</h2><p>Tap a few pads at once or use <b>1234 / QWER / ASDF / ZXCV</b>. Use the arrows to cycle through seven instruments. Choose a grid from 2×2 to 8×8. On compact screens, swipe larger grids sideways. In Edit pads, tap any pad to assign another instrument or sound.</p></div><div><h2>Catch a happy accident.</h2><p>Press Record, play up to 30 seconds, then press Record again. Loop your take or save it as a WAV. Volume, pitch, and room settings are captured with each hit. Settings lets you choose a root note, scale, and octave for pitched instruments.</p></div><div><h2>Keep it in your pocket.</h2><p>On your iPad, tap Share → Add to Home Screen. After the offline indicator says ready, the sounds work without a connection. Enable audio plays a check tone; tap Test audio to hear it again. If it’s silent, raise the iPad’s media volume and check its Bluetooth output.</p></div></section>
       <p id="notice" class="notice" role="status" aria-live="polite"></p>
     </main>
     <div id="pad-editor" class="editor-backdrop" hidden><section class="pad-editor" role="dialog" aria-modal="true" aria-labelledby="editor-title" tabindex="-1"><div class="editor-heading"><div><div class="eyebrow">PAD ASSIGNMENT</div><h2 id="editor-title">Edit pad 01</h2></div><button id="editor-close" aria-label="Close pad editor">×</button></div><label for="pad-instrument">INSTRUMENT</label><select id="pad-instrument"><option value="drums">Drum kit</option><option value="piano">Grand piano</option><option value="electric">Electric piano</option><option value="organ">Organ</option><option value="synth">Analog synth</option><option value="keys">Kalimba</option><option value="earshot">Earshot SFX</option></select><label for="pad-sound">SOUND / NOTE</label><select id="pad-sound"></select><div class="editor-actions"><button id="preview-pad">▷ Preview</button><button id="save-pad">Save pad</button></div><p>Saved to this mode’s layout on this device.</p></section></div>
