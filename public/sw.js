@@ -1,5 +1,5 @@
 /* This service worker owns only /soundboard/ and its own cache. */
-var CACHE = 'nosa-soundboard-v5';
+var CACHE = 'nosa-soundboard-v6';
 var FILES = ['./', './index.html', './style.css', './synth.js', './layout.js', './voice-worker.js', './app.js', './icon.svg', './apple-touch-icon.png', './manifest.webmanifest'];
 for (var i = 1; i <= 16; i++) FILES.push('./audio/' + String(i).padStart(2, '0') + '.wav');
 self.addEventListener('install', function (event) { event.waitUntil(caches.open(CACHE).then(function (cache) { return cache.addAll(FILES); }).then(function () { return self.skipWaiting(); })); });
