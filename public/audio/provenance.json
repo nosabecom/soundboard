@@ -1,0 +1,117 @@
+{
+  "earshot_bank": "forge_v2r6+fit1+pluck1",
+  "sounds": [
+    {
+      "name": "Deep impact",
+      "bank_id": "impact/deep",
+      "file": "01.wav",
+      "duration": 6.2047,
+      "peak": 0.631
+    },
+    {
+      "name": "Glass ping",
+      "bank_id": "pro_notify/ding_1822",
+      "file": "02.wav",
+      "duration": 0.26,
+      "peak": 0.631
+    },
+    {
+      "name": "Fast whoosh",
+      "bank_id": "whoosh_fast/crisp",
+      "file": "03.wav",
+      "duration": 1.0561,
+      "peak": 0.631
+    },
+    {
+      "name": "Sub drop",
+      "bank_id": "sub_drop/808",
+      "file": "04.wav",
+      "duration": 2.0539,
+      "peak": 0.631
+    },
+    {
+      "name": "Bubble pop",
+      "bank_id": "pro_pop/bloop",
+      "file": "05.wav",
+      "duration": 0.123,
+      "peak": 0.631
+    },
+    {
+      "name": "Soft click",
+      "bank_id": "click/soft",
+      "file": "06.wav",
+      "duration": 0.0938,
+      "peak": 0.631
+    },
+    {
+      "name": "Glitch",
+      "bank_id": "glitch/stutter",
+      "file": "07.wav",
+      "duration": 0.64,
+      "peak": 0.631
+    },
+    {
+      "name": "Shimmer",
+      "bank_id": "shimmer/m0",
+      "file": "08.wav",
+      "duration": 4.2,
+      "peak": 0.631
+    },
+    {
+      "name": "Space zip",
+      "bank_id": "pro_zip/up",
+      "file": "09.wav",
+      "duration": 0.3503,
+      "peak": 0.631
+    },
+    {
+      "name": "Low knock",
+      "bank_id": "pro_pop_in/knock",
+      "file": "10.wav",
+      "duration": 0.152,
+      "peak": 0.631
+    },
+    {
+      "name": "Riser",
+      "bank_id": "riser/air",
+      "file": "11.wav",
+      "duration": 2.4,
+      "peak": 0.631
+    },
+    {
+      "name": "Swipe",
+      "bank_id": "swipe/cloth",
+      "file": "12.wav",
+      "duration": 0.6757,
+      "peak": 0.631
+    },
+    {
+      "name": "Kalimba",
+      "bank_id": "pluck/kalimba",
+      "file": "13.wav",
+      "duration": 3.0,
+      "peak": 0.631
+    },
+    {
+      "name": "Key thock",
+      "bank_id": "typing_key/thock",
+      "file": "14.wav",
+      "duration": 0.3365,
+      "peak": 0.631
+    },
+    {
+      "name": "Logo sting",
+      "bank_id": "logo_sting/spark",
+      "file": "15.wav",
+      "duration": 1.84,
+      "peak": 0.631
+    },
+    {
+      "name": "Air fall",
+      "bank_id": "downlifter/air_fall",
+      "file": "16.wav",
+      "duration": 2.0601,
+      "peak": 0.631
+    }
+  ]
+}

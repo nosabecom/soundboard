@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101113">
+  <meta name="description" content="A pocket-sized playground for sound. Tap out beats, play code-made effects, and record a little noise.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Soundboard — nosa.dev</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./synth.js"></script>
+  <script defer src="./layout.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header"><a class="wordmark" href="/" aria-label="Nosa home">nosa<span>®</span></a><div class="breadcrumb">PLAYGROUND <span>/</span> 001</div><span class="site-label">SOUND LAB</span></header>
+    <main>
+      <section class="instrument" aria-label="Soundboard instrument">
+        <div class="deck-header"><div class="deck-title"><h1>SOUND<span>BOARD</span></h1><span class="hardware-model">SB—01</span></div><button id="power" class="power"><span class="status-dot"></span><span id="power-label">Enable audio</span></button></div>
+
+        <section id="settings" class="settings" hidden aria-label="Instrument settings"><div class="setting"><label for="root-note">ROOT NOTE</label><select id="root-note"><option value="0">C</option><option value="1">C♯</option><option value="2">D</option><option value="3">E♭</option><option value="4">E</option><option value="5">F</option><option value="6">F♯</option><option value="7">G</option><option value="8">A♭</option><option value="9">A</option><option value="10">B♭</option><option value="11">B</option></select></div><div class="setting"><label for="scale">SCALE</label><select id="scale"><option value="chromatic">Chromatic</option><option value="major">Major</option><option value="minor">Minor</option><option value="pentatonic">Minor pentatonic</option></select></div><div class="setting"><label for="octave">START OCTAVE</label><select id="octave"><option value="2">2 · Low</option><option value="3" selected>3 · Middle</option><option value="4">4 · High</option></select></div><div class="setting"><label for="room">ROOM <output id="room-value">15%</output></label><input id="room" type="range" min="0" max="70" value="15"></div><button id="reset-board">Reset this mode</button><p>Scale and root remap the notes in this instrument’s layout. Edit pads to mix in other instruments. </p></section>
+        <div id="edit-hint" class="edit-hint" hidden>Tap a pad to change its instrument and sound. <button id="done-edit">Done</button></div>
+        <div class="grid-scroll"><div class="pad-grid" id="pads" aria-label="Sound pads"></div></div>
+        <div class="pad-info"><span><span class="tiny-dot"></span> <span id="now-playing">Ready</span></span><span id="bank-meta" class="keyboard-hint">16 PADS · DRUM KIT</span></div>
+        <div class="bank-row"><div class="mode-picker"><button id="previous-mode" class="mode-arrow" aria-label="Previous instrument">‹</button><label for="mode" class="sr-only">Instrument mode</label><select id="mode"><option value="drums">01 · Drum kit</option><option value="piano">02 · Grand piano</option><option value="electric">03 · Electric piano</option><option value="organ">04 · Organ</option><option value="synth">05 · Analog synth</option><option value="keys">06 · Kalimba</option><option value="earshot">07 · Earshot SFX</option></select><button id="next-mode" class="mode-arrow" aria-label="Next instrument">›</button></div><div class="board-tools"><label class="size-picker" for="grid-size"><span>GRID</span><select id="grid-size"><option value="2">2 × 2</option><option value="3">3 × 3</option><option value="4" selected>4 × 4</option><option value="6">6 × 6</option><option value="8">8 × 8</option></select></label><button id="edit-pads" aria-pressed="false">Edit pads</button><button id="settings-button" aria-expanded="false" aria-controls="settings">Settings</button></div></div>
+        <div class="transport"><div class="transport-buttons"><button id="record" class="record" aria-label="Start recording"><span class="record-dot"></span><span id="record-label">Record</span></button><button id="loop" aria-label="Loop recording" aria-pressed="false" disabled><span aria-hidden="true">↻</span> Loop</button><button id="stop" aria-label="Stop all sounds"><span class="stop-square"></span> Stop</button></div><div class="take-display"><span id="take-state">READY TO RECORD</span><span id="timer">00:00.0</span></div><button id="download" class="download" disabled><span aria-hidden="true">↓</span> Save WAV</button></div>
+        <div class="mixer"><label for="volume"><span class="knob" id="volume-knob" aria-hidden="true"></span>VOLUME <input id="volume" type="range" min="0" max="100" value="75"><output id="volume-value" for="volume">75%</output></label><label for="pitch"><span class="knob" id="pitch-knob" aria-hidden="true"></span>PITCH <input id="pitch" type="range" min="-12" max="12" value="0"><output id="pitch-value" for="pitch">0 st</output></label><button id="demo" class="demo"><span aria-hidden="true">▷</span> Try a beat</button></div>
+      </section>
+      <div class="under-deck"><p class="shortcut-reference">1234 / QWER / ASDF / ZXCV</p><button id="help-button" aria-expanded="false" aria-controls="help">Help <span>+</span></button></div>
+      <section id="help" class="help" hidden><div><h2>A tiny studio. Anywhere.</h2><p>Tap a few pads at once or use <b>1234 / QWER / ASDF / ZXCV</b>. Use the arrows to cycle through seven instruments. Choose a grid from 2×2 to 8×8. On compact screens, swipe larger grids sideways. In Edit pads, tap any pad to assign another instrument or sound.</p></div><div><h2>Catch a happy accident.</h2><p>Press Record, play up to 30 seconds, then press Record again. Loop your take or save it as a WAV. Volume, pitch, and room settings are captured with each hit. Settings lets you choose a root note, scale, and octave for pitched instruments.</p></div><div><h2>Keep it in your pocket.</h2><p>On your iPad, tap Share → Add to Home Screen. After the offline indicator says ready, the sounds work without a connection. If it’s silent, enable audio and check your volume and silent switch.</p></div></section>
+      <p id="notice" class="notice" role="status" aria-live="polite"></p>
+    </main>
+    <div id="pad-editor" class="editor-backdrop" hidden><section class="pad-editor" role="dialog" aria-modal="true" aria-labelledby="editor-title" tabindex="-1"><div class="editor-heading"><div><div class="eyebrow">PAD ASSIGNMENT</div><h2 id="editor-title">Edit pad 01</h2></div><button id="editor-close" aria-label="Close pad editor">×</button></div><label for="pad-instrument">INSTRUMENT</label><select id="pad-instrument"><option value="drums">Drum kit</option><option value="piano">Grand piano</option><option value="electric">Electric piano</option><option value="organ">Organ</option><option value="synth">Analog synth</option><option value="keys">Kalimba</option><option value="earshot">Earshot SFX</option></select><label for="pad-sound">SOUND / NOTE</label><select id="pad-sound"></select><div class="editor-actions"><button id="preview-pad">▷ Preview</button><button id="save-pad">Save pad</button></div><p>Saved to this mode’s layout on this device.</p></section></div>
+    <footer><span class="footer-credit"><a href="https://github.com/Leonxlnx/earshot" target="_blank" rel="noopener">Earshot ↗</a></span><span id="offline-status"><span class="tiny-dot"></span> OFFLINE PREPARING</span></footer>
+  </div>
+  <noscript>This soundboard needs JavaScript enabled to play sounds.</noscript>
+</body>
+</html>

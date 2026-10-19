@@ -1,0 +1,16 @@
+{
+  "name": "nosa-soundboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node --check public/app.js && node --check public/synth.js && node --check public/sw.js && node --check public/layout.js && node --test tests/*.test.mjs",
+    "preview": "node scripts/serve.mjs dist"
+  }
+}
