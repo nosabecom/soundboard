@@ -1,25 +1,22 @@
-# Soundboard
+# Soundboard (SB—02)
 
-A touch-first, dark soundboard for iPad and desktop, inspired by physical percussion pads.
+A tactile, touch-first pocket groovebox and sound lab for iPad, desktop, and mobile, inspired by physical percussion samplers and step sequencers.
 
 **Play:** https://nosa.dev/soundboard/
 
-- Seven instrument modes: drum kit, synthesized grand piano, electric piano, organ, analog synth, kalimba, and 16 Earshot effects.
-- 2×2, 3×3, 4×4, 6×6, and 8×8 grids. Cycle presets with the arrow buttons.
-- Edit any pad to mix a sound or note from another instrument into the current mode. Each mode keeps its own layout.
-- Root note, chromatic/major/minor/pentatonic scales, start octave, pitch, room reverb, and volume.
-- Multi-touch and keyboard playback. The first 16 pad shortcuts are `1234 / QWER / ASDF / ZXCV`; larger grids show additional shortcuts on the pads.
-- Record up to 30 seconds, loop your performance, and export a stereo PCM WAV including sound tails and reverb.
-- Device-local layout/settings persistence. Recordings are held in memory until downloaded; reloading clears the take.
-- Offline PWA, scoped to `/soundboard/`. On iPad: Safari → Share → Add to Home Screen. Wait for **OFFLINE READY** before going offline.
+- **Nine instrument banks:** drum kit (with authentic open/closed hi-hat choke), 808 & bass, synthesized grand piano, electric piano, drawbar organ, analog synth, lush pad, kalimba, and 16 Earshot SFX.
+- **Smart scales & chord voicings:** chromatic, major, natural minor, minor pentatonic, Dorian, Mixolydian, blues, and Hirajoshi scales—plus instant diatonic chord modes (`Single`, `Power 5th`, `Triads`, `7th Lush`, `9th Jazz`) with humanized strumming.
+- **16-step groove sequencer:** six built-in multi-instrument grooves (*Lagos Bounce*, *90s Boom Bap*, *UK 2-Step*, *Midnight Lo-Fi*, *808 Studio*, *Neon Drive*), custom per-pad step programming with Shift-click accents, tempo (`60–180 BPM`), tap tempo, swing, and metronome click.
+- **Expressive performance:** 2×2 to 8×8 pad grids, finger-glide strumming, multi-touch and keyboard playback (`1234 / QWER / ASDF / ZXCV`), and tempo-locked hold-to-roll note repeat (`1/8`, `1/16`, `1/24T`, `1/32`, or hold `Shift`).
+- **Multi-layer overdub looper & WAV export:** record up to 30 seconds, overdub additional instrument passes with `1/16` input quantize and per-layer undo, and export a stereo 44.1 kHz PCM WAV (including active sequencer bars, filter, stereo dub echo, and room reverb tails).
+- **Live FX, OLED scope & zero-backend sharing:** interactive rotary dials + sliders for volume, pitch, DJ bi-directional filter (`LPF ↔ HPF`), stereo tempo-synced dub echo, and room reverb; real-time waveform/spectrum OLED display; per-pad semitone tune and level trim; and compact `#s=...` URL state sharing.
+- **Offline PWA:** scoped strictly to `/soundboard/`. On iPad: Safari → Share → Add to Home Screen. Wait for **OFFLINE READY** before going offline.
 
-Tap **Enable audio** once to play a check tone; the same button becomes **Test audio**. On iPad, the app requests the playback audio session so Silent Mode does not mute the instrument. Older iPad browsers use a silent media-channel fallback while the app is open. Play a pad directly to enable audio automatically. Open **Edit pads**, select a pad, choose an instrument and sound, and save. **Settings** changes the note layout in the active instrument; mixed-in instruments remain assigned. **Reset this mode** restores the current preset's layout.
-
-All instrument voices are one-shot synthesized sounds, including the piano approximations. They do not require a server, microphone, or API key. The Earshot WAVs are committed assets; provenance and regeneration instructions are in [docs/sounds.md](docs/sounds.md). Synthesized voices are warmed in a worker so interaction stays responsive. iPad layouts are checked in responsive browser emulation; Safari/device audio behavior still depends on the device volume and audio policies.
+All instrument voices are deterministic client-side synthesis (plus committed Earshot WAVs) requiring no server, microphone, or API key. On iPad, the app activates the `playback` audio session (with a silent media-channel fallback on older WebKit) so Silent Mode does not mute playback.
 
 ## Development
 
-Node 22+ and the pinned pnpm version in `package.json`:
+Node 24+ and the pinned pnpm version in `package.json`:
 
 ```sh
 pnpm install --frozen-lockfile
@@ -33,6 +30,6 @@ Development serves `http://localhost:5173/soundboard/`. The dependency-free buil
 
 ## Hosting
 
-The private repository is `nosabecom/soundboard`, connected to the separate Vercel `soundboard` project. Vercel builds with `pnpm build`. The portfolio project's routing rule proxies `/soundboard` and its descendants to the soundboard project's stable production domain, preserving the path. This keeps the source private while the playable website is public and leaves portfolio source untouched.
+The repository is `nosabecom/soundboard`, connected to the `soundboard` Vercel project. Vercel builds with `pnpm build`, and the `portfolio` project proxies `/soundboard` and its descendants to the soundboard production domain.
 
-Routing details are in [docs/deployment.md](docs/deployment.md). Bump the cache version in `public/sw.js` and keep the `?v=` markers in HTML, worker imports, and its precache list in sync when shipping asset changes. The service worker only handles `/soundboard/` and only deletes caches prefixed `nosa-soundboard-`.
+Routing details are in [docs/deployment.md](docs/deployment.md). Bump the cache version in `public/sw.js` and keep the `?v=` markers in HTML, worker imports, and its precache list in sync when shipping asset changes.

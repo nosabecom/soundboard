@@ -14,4 +14,14 @@ PYTHONPATH=/tmp/earshot .venv/bin/python scripts/render-earshot.py
 
 The renderer uses the bank API with model checks disabled. No PyTorch, downloaded models, API key, or reference recordings are needed. The committed WAVs mean Python is unnecessary to build, deploy, or use the app.
 
-The other six instruments are original deterministic synthesis in `public/synth.js`: 16 drum voices, additive struck-string piano, FM electric piano, drawbar-style organ, a band-limited detuned additive synth, and plucked kalimba. These are synthesized approximations rather than sampled acoustic instruments. Pitched pads span MIDI 24–119; tuning settings remap the visible note layout. Pads are one-shot voices with natural decay, and multiple pads can sound at once.
+The other eight instrument banks are original deterministic synthesis in `public/synth.js`:
+- **Drum kit (`drums`):** 16 sculpted drum and percussion voices (kick, dual-mode snare, metallic closed/open hi-hat pair with choke group, low/mid/high toms, rimshot, 4-burst clap, shaker, 808 cowbell, tambourine, sub bass, clave, laser, crash).
+- **808 & Bass (`bass`):** pitch-glided sub fundamental with low-pass shaped harmonic growl.
+- **Grand piano (`piano`):** stretched inharmonic partials with soundboard bloom and felt-hammer transient.
+- **Electric piano (`electric`):** FM tine synthesis with bell attack and chorus detune.
+- **Drawbar organ (`organ`):** seven-drawbar harmonic stack with key-click transient and subtle rotary shimmer.
+- **Analog synth (`synth`):** 3-voice detuned unison harmonics with envelope-shaped filter decay.
+- **Lush pad (`pad`):** slow-blooming detuned ensemble harmonics for sustained chords and textures.
+- **Kalimba (`keys`):** plucked thumb-tine fundamental with fast metallic overtones and gourd knock.
+
+Pitched pads span MIDI 24–119; scale, octave, root, and diatonic chord voicing settings remap the playable layout dynamically.

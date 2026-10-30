@@ -3,41 +3,333 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101113">
-  <meta name="description" content="A pocket-sized playground for sound. Tap out beats, play code-made effects, and record a little noise.">
+  <meta name="theme-color" content="#0b0c0e">
+  <meta name="description" content="A tactile pocket groovebox and sound lab. Finger-drum, sequence Afrobeats and Boom Bap grooves, play Neo-Soul chords, shape live FX, and export stereo WAVs.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Soundboard — nosa.dev</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Soundboard SB—02 — nosa.dev</title>
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./style.css?v=8">
-  <script defer src="./synth.js?v=8"></script>
-  <script defer src="./layout.js?v=8"></script>
-  <script defer src="./audio-session.js?v=8"></script>
-  <script defer src="./app.js?v=8"></script>
+  <link rel="stylesheet" href="./style.css?v=9">
+  <script defer src="./synth.js?v=9"></script>
+  <script defer src="./layout.js?v=9"></script>
+  <script defer src="./audio-session.js?v=9"></script>
+  <script defer src="./app.js?v=9"></script>
 </head>
 <body>
   <div class="page">
-    <header class="site-header"><a class="wordmark" href="/" aria-label="Nosa home">nosa<span>®</span></a><div class="breadcrumb">PLAYGROUND <span>/</span> 001</div><span class="site-label">SOUND LAB</span></header>
-    <main>
-      <section class="instrument" aria-label="Soundboard instrument">
-        <div class="deck-header"><div class="deck-title"><h1>SOUND<span>BOARD</span></h1><span class="hardware-model">SB—01</span></div><button id="power" class="power"><span class="status-dot"></span><span id="power-label">Enable audio</span></button></div>
+    <header class="site-header">
+      <a class="wordmark" href="/" aria-label="Nosa home">nosa<span>®</span></a>
+      <div class="breadcrumb">PLAYGROUND <span>/</span> 001</div>
+      <span class="site-label">SOUND LAB · SB—02</span>
+    </header>
 
-        <div class="grid-scroll"><div class="pad-grid" id="pads" aria-label="Sound pads"></div></div>
-        <div class="pad-info"><span><span class="tiny-dot"></span> <span id="now-playing">Ready</span></span><span id="bank-meta" class="keyboard-hint">16 PADS · DRUM KIT</span></div>
-        <div class="bank-row"><div class="mode-picker"><button id="previous-mode" class="mode-arrow" aria-label="Previous instrument">‹</button><label for="mode" class="sr-only">Instrument mode</label><select id="mode"><option value="drums">01 · Drum kit</option><option value="piano">02 · Grand piano</option><option value="electric">03 · Electric piano</option><option value="organ">04 · Organ</option><option value="synth">05 · Analog synth</option><option value="keys">06 · Kalimba</option><option value="earshot">07 · Earshot SFX</option></select><button id="next-mode" class="mode-arrow" aria-label="Next instrument">›</button></div><div class="board-tools"><label class="size-picker" for="grid-size"><span>GRID</span><select id="grid-size"><option value="2">2 × 2</option><option value="3">3 × 3</option><option value="4" selected>4 × 4</option><option value="6">6 × 6</option><option value="8">8 × 8</option></select></label><button id="edit-pads" aria-pressed="false">Edit pads</button><button id="settings-button" aria-expanded="false" aria-controls="settings">Settings</button></div></div>
-        <section id="settings" class="settings" hidden aria-label="Instrument settings"><div class="setting"><label for="root-note">ROOT NOTE</label><select id="root-note"><option value="0">C</option><option value="1">C♯</option><option value="2">D</option><option value="3">E♭</option><option value="4">E</option><option value="5">F</option><option value="6">F♯</option><option value="7">G</option><option value="8">A♭</option><option value="9">A</option><option value="10">B♭</option><option value="11">B</option></select></div><div class="setting"><label for="scale">SCALE</label><select id="scale"><option value="chromatic">Chromatic</option><option value="major">Major</option><option value="minor">Minor</option><option value="pentatonic">Minor pentatonic</option></select></div><div class="setting"><label for="octave">START OCTAVE</label><select id="octave"><option value="2">2 · Low</option><option value="3" selected>3 · Middle</option><option value="4">4 · High</option></select></div><div class="setting"><label for="room">ROOM <output id="room-value">15%</output></label><input id="room" type="range" min="0" max="70" value="15"></div><button id="reset-board">Reset this mode</button><p>Scale and root remap the notes in this instrument’s layout. Edit pads to mix in other instruments. </p></section>
-        <div id="edit-hint" class="edit-hint" hidden>Tap a pad to change its instrument and sound. <button id="done-edit">Done</button></div>
-        <div class="transport"><div class="transport-buttons"><button id="record" class="record" aria-label="Start recording"><span class="record-dot"></span><span id="record-label">Record</span></button><button id="loop" aria-label="Loop recording" aria-pressed="false" disabled><span aria-hidden="true">↻</span> Loop</button><button id="stop" aria-label="Stop all sounds"><span class="stop-square"></span> Stop</button></div><div class="take-display"><span id="take-state">READY TO RECORD</span><span id="timer">00:00.0</span></div><button id="download" class="download" disabled><span aria-hidden="true">↓</span> Save WAV</button></div>
-        <div class="mixer"><label for="volume"><span class="knob" id="volume-knob" aria-hidden="true"></span>VOLUME <input id="volume" type="range" min="0" max="100" value="75"><output id="volume-value" for="volume">75%</output></label><label for="pitch"><span class="knob" id="pitch-knob" aria-hidden="true"></span>PITCH <input id="pitch" type="range" min="-12" max="12" value="0"><output id="pitch-value" for="pitch">0 st</output></label><button id="demo" class="demo"><span aria-hidden="true">▷</span> Try a beat</button></div>
+    <main>
+      <section class="instrument" aria-label="Soundboard groovebox instrument">
+        <div class="deck-header">
+          <div class="deck-title">
+            <h1>SOUND<span>BOARD</span></h1>
+            <span class="hardware-model">SB—02</span>
+          </div>
+
+          <button id="scope-toggle" class="scope-screen" type="button" aria-label="Toggle audio visualizer between waveform and spectrum" title="Tap to switch Scope / Spectrum">
+            <canvas id="scope" width="240" height="38" aria-hidden="true"></canvas>
+            <span id="scope-mode" class="scope-badge">SCOPE</span>
+            <span class="vu-meters" aria-hidden="true"><i id="vu-l"></i><i id="vu-r"></i></span>
+          </button>
+
+          <div class="deck-actions">
+            <button id="share-board" class="hw-pill" type="button" aria-label="Copy shareable link for this board and groove">↗ Share</button>
+            <button id="power" class="power" type="button"><span class="status-dot"></span><span id="power-label">Enable audio</span></button>
+          </div>
+        </div>
+
+        <div class="grid-scroll">
+          <div class="pad-grid" id="pads" aria-label="Sound pads"></div>
+        </div>
+
+        <div class="pad-info">
+          <span class="telemetry-readout"><span id="hit-led" class="tiny-dot"></span> <span id="now-playing">Ready</span></span>
+          <div class="roll-strip" role="group" aria-label="Hold-to-roll note repeat rate">
+            <span class="roll-label">ROLL</span>
+            <button type="button" class="roll-btn" data-roll="0" aria-pressed="true">OFF</button>
+            <button type="button" class="roll-btn" data-roll="2" aria-pressed="false">1/8</button>
+            <button type="button" class="roll-btn" data-roll="4" aria-pressed="false">1/16</button>
+            <button type="button" class="roll-btn" data-roll="6" aria-pressed="false">1/24T</button>
+            <button type="button" class="roll-btn" data-roll="8" aria-pressed="false">1/32</button>
+          </div>
+          <span id="bank-meta" class="keyboard-hint">16 PADS · DRUM KIT</span>
+        </div>
+
+        <div class="bank-row">
+          <div class="mode-picker">
+            <button id="previous-mode" class="mode-arrow" type="button" aria-label="Previous instrument">‹</button>
+            <label for="mode" class="sr-only">Instrument mode</label>
+            <select id="mode">
+              <option value="drums">01 · Drum kit</option>
+              <option value="bass">02 · 808 &amp; Bass</option>
+              <option value="piano">03 · Grand piano</option>
+              <option value="electric">04 · Electric piano</option>
+              <option value="organ">05 · Drawbar organ</option>
+              <option value="synth">06 · Analog synth</option>
+              <option value="pad">07 · Lush pad</option>
+              <option value="keys">08 · Kalimba</option>
+              <option value="earshot">09 · Earshot SFX</option>
+            </select>
+            <button id="next-mode" class="mode-arrow" type="button" aria-label="Next instrument">›</button>
+          </div>
+
+          <div class="board-tools">
+            <label class="size-picker chord-picker" for="chord-quick">
+              <span>CHORD</span>
+              <select id="chord-quick">
+                <option value="off">Single</option>
+                <option value="fifth">Power 5th</option>
+                <option value="triad">Triads</option>
+                <option value="seventh">7th Lush</option>
+                <option value="ninth">9th Jazz</option>
+              </select>
+            </label>
+            <label class="size-picker" for="grid-size">
+              <span>GRID</span>
+              <select id="grid-size">
+                <option value="2">2 × 2</option>
+                <option value="3">3 × 3</option>
+                <option value="4" selected>4 × 4</option>
+                <option value="6">6 × 6</option>
+                <option value="8">8 × 8</option>
+              </select>
+            </label>
+            <button id="seq-toggle" type="button" aria-expanded="true" aria-controls="sequencer">Sequencer</button>
+            <button id="edit-pads" type="button" aria-pressed="false">Edit pads</button>
+            <button id="settings-button" type="button" aria-expanded="false" aria-controls="settings">Settings</button>
+          </div>
+        </div>
+
+        <section id="settings" class="settings" hidden aria-label="Instrument settings">
+          <div class="setting">
+            <label for="root-note">ROOT NOTE</label>
+            <select id="root-note">
+              <option value="0">C</option>
+              <option value="1">C♯</option>
+              <option value="2">D</option>
+              <option value="3">E♭</option>
+              <option value="4">E</option>
+              <option value="5">F</option>
+              <option value="6">F♯</option>
+              <option value="7">G</option>
+              <option value="8">A♭</option>
+              <option value="9">A</option>
+              <option value="10">B♭</option>
+              <option value="11">B</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label for="scale">SCALE</label>
+            <select id="scale">
+              <option value="chromatic">Chromatic</option>
+              <option value="major">Major</option>
+              <option value="minor">Natural minor</option>
+              <option value="pentatonic">Minor pentatonic</option>
+              <option value="dorian">Dorian (Neo-soul)</option>
+              <option value="mixolydian">Mixolydian (Afro/Funk)</option>
+              <option value="blues">Blues</option>
+              <option value="hirajoshi">Hirajoshi</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label for="octave">START OCTAVE</label>
+            <select id="octave">
+              <option value="1">1 · Sub</option>
+              <option value="2">2 · Low</option>
+              <option value="3" selected>3 · Middle</option>
+              <option value="4">4 · High</option>
+              <option value="5">5 · Air</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label for="room">ROOM REVERB <output id="room-value">15%</output></label>
+            <input id="room" type="range" min="0" max="70" value="15">
+          </div>
+          <button id="reset-board" type="button">Reset this mode</button>
+          <p>Scale, root, octave, and chord voicing remap pitched notes in this mode. Custom mixed-in pads stay assigned.</p>
+        </section>
+
+        <div id="edit-hint" class="edit-hint" hidden>
+          <span>Tap any pad to assign another instrument, note, tuning, or level.</span>
+          <button id="done-edit" type="button">Done</button>
+        </div>
+
+        <section id="sequencer" class="sequencer" aria-label="16-step pattern sequencer">
+          <div class="seq-bar">
+            <button id="seq-play" class="seq-run" type="button" aria-pressed="false">
+              <span class="seq-led"></span>
+              <span id="seq-play-label">▷ Run</span>
+            </button>
+
+            <label class="seq-groove-wrap" for="groove">
+              <span class="sr-only">Groove preset</span>
+              <select id="groove">
+                <option value="lagos">Groove · Lagos Bounce</option>
+                <option value="boombap">Groove · 90s Boom Bap</option>
+                <option value="garage">Groove · UK 2-Step</option>
+                <option value="lofi">Groove · Midnight Lo-Fi</option>
+                <option value="trap">Groove · 808 Studio</option>
+                <option value="electro">Groove · Neon Drive</option>
+                <option value="custom">Groove · Custom</option>
+              </select>
+            </label>
+
+            <div class="tempo-box">
+              <button id="bpm-down" type="button" aria-label="Decrease tempo">−</button>
+              <label for="bpm" class="tempo-readout">
+                <input id="bpm" type="number" min="60" max="180" value="104" inputmode="numeric">
+                <span>BPM</span>
+              </label>
+              <button id="bpm-up" type="button" aria-label="Increase tempo">+</button>
+              <button id="tap-tempo" type="button" title="Tap repeatedly to set tempo">TAP</button>
+            </div>
+
+            <label class="swing-box" for="swing">
+              <span>SWING</span>
+              <input id="swing" type="range" min="0" max="60" value="16">
+              <output id="swing-value" for="swing">16%</output>
+            </label>
+
+            <div class="seq-actions">
+              <button id="metronome" class="seq-mini-btn" type="button" aria-pressed="false" title="Toggle metronome click">Click</button>
+              <button id="seq-clear" class="seq-mini-btn" type="button" title="Clear all sequencer tracks">Clear</button>
+            </div>
+          </div>
+
+          <div class="seq-track-bar">
+            <span id="seq-track">TRACK · 01 KICK</span>
+            <span class="seq-tip">Tap a pad to select its track · Tap steps 1–16 to program · Shift-click for accent</span>
+          </div>
+
+          <div id="steps" class="step-grid" role="group" aria-label="16 sequencer steps"></div>
+        </section>
+
+        <div class="transport">
+          <div class="transport-buttons">
+            <button id="record" class="record" type="button" aria-label="Start recording">
+              <span class="record-dot"></span>
+              <span id="record-label">Record</span>
+            </button>
+            <button id="loop" type="button" aria-label="Loop recording" aria-pressed="false" disabled>
+              <span aria-hidden="true">↻</span> Loop
+            </button>
+            <button id="quantize" type="button" aria-pressed="false" title="Quantize recorded hits to 1/16th notes">Q 1/16</button>
+            <button id="undo-take" type="button" aria-label="Undo last overdub layer" disabled>↶ Undo</button>
+            <button id="clear-take" type="button" aria-label="Clear recorded take" disabled>× Clear</button>
+            <button id="stop" type="button" aria-label="Stop all sounds">
+              <span class="stop-square"></span> Stop
+            </button>
+          </div>
+          <div class="take-display">
+            <span id="take-state">READY</span>
+            <span id="timer">00:00.0</span>
+          </div>
+          <button id="download" class="download" type="button">
+            <span aria-hidden="true">↓</span> Save WAV
+          </button>
+        </div>
+
+        <div class="mixer">
+          <label for="volume">
+            <span class="knob" id="volume-knob" data-for="volume" data-default="75" title="Drag vertically or double-click to reset" aria-hidden="true"></span>
+            <span class="mixer-meta"><span>VOLUME</span><output id="volume-value" for="volume">75%</output></span>
+            <input id="volume" type="range" min="0" max="100" value="75">
+          </label>
+          <label for="pitch">
+            <span class="knob" id="pitch-knob" data-for="pitch" data-default="0" title="Drag vertically or double-click to reset" aria-hidden="true"></span>
+            <span class="mixer-meta"><span>PITCH</span><output id="pitch-value" for="pitch">0 st</output></span>
+            <input id="pitch" type="range" min="-12" max="12" value="0">
+          </label>
+          <label for="filter">
+            <span class="knob" id="filter-knob" data-for="filter" data-default="0" title="LPF left, HPF right · Double-click to reset" aria-hidden="true"></span>
+            <span class="mixer-meta"><span>FILTER</span><output id="filter-value" for="filter">FLAT</output></span>
+            <input id="filter" type="range" min="-100" max="100" value="0">
+          </label>
+          <label for="delay">
+            <span class="knob" id="delay-knob" data-for="delay" data-default="0" title="Tempo-synced stereo echo · Double-click to reset" aria-hidden="true"></span>
+            <span class="mixer-meta"><span>ECHO</span><output id="delay-value" for="delay">0%</output></span>
+            <input id="delay" type="range" min="0" max="65" value="0">
+          </label>
+          <button id="demo" class="demo" type="button"><span aria-hidden="true">▷</span> Next groove</button>
+        </div>
       </section>
-      <div class="under-deck"><p class="shortcut-reference">1234 / QWER / ASDF / ZXCV</p><button id="help-button" aria-expanded="false" aria-controls="help">Help <span>+</span></button></div>
-      <section id="help" class="help" hidden><div><h2>A tiny studio. Anywhere.</h2><p>Tap a few pads at once or use <b>1234 / QWER / ASDF / ZXCV</b>. Use the arrows to cycle through seven instruments. Choose a grid from 2×2 to 8×8. On compact screens, swipe larger grids sideways. In Edit pads, tap any pad to assign another instrument or sound.</p></div><div><h2>Catch a happy accident.</h2><p>Press Record, play up to 30 seconds, then press Record again. Loop your take or save it as a WAV. Volume, pitch, and room settings are captured with each hit. Settings lets you choose a root note, scale, and octave for pitched instruments.</p></div><div><h2>Keep it in your pocket.</h2><p>On your iPad, tap Share → Add to Home Screen. After the offline indicator says ready, the sounds work without a connection. Enable audio plays a check tone; tap Test audio to hear it again. If it’s silent, raise the iPad’s media volume and check its Bluetooth output.</p></div></section>
+
+      <div class="under-deck">
+        <p class="shortcut-reference">KEYS: 1234 / QWER / ASDF / ZXCV · SPACE: RUN SEQ · SHIFT+HOLD: 1/16 ROLL · ESC: STOP</p>
+        <button id="help-button" type="button" aria-expanded="false" aria-controls="help">Manual <span>+</span></button>
+      </div>
+
+      <section id="help" class="help" hidden>
+        <div>
+          <h2>01 · Pads, Chords &amp; Rolls</h2>
+          <p>Tap pads, glide across them to strum, or play with <b>1234 / QWER / ASDF / ZXCV</b>. Cycle nine instruments—including <b>808 &amp; Bass</b> and <b>Lush pad</b>. On pitched instruments, choose <b>7th Lush</b> or <b>9th Jazz</b> in Chord mode to trigger full Neo-Soul voicings from single pads. Set <b>ROLL</b> (or hold <b>Shift</b>) to perform tempo-locked hi-hat and snare rolls.</p>
+        </div>
+        <div>
+          <h2>02 · Sequencer &amp; Overdub Looper</h2>
+          <p>Press <b>▷ Run</b> (or <b>Space</b>) to start the 16-step groovebox—featuring <b>Lagos Bounce</b>, <b>90s Boom Bap</b>, <b>UK 2-Step</b>, and more. Tap any pad to view its track and toggle steps 1–16. Press <b>Record</b> to capture a live loop, then switch instruments and press <b>Overdub</b> to layer basslines and chords with <b>↶ Undo</b>.</p>
+        </div>
+        <div>
+          <h2>03 · Live FX, Share &amp; Offline</h2>
+          <p>Sweep the DJ <b>Filter</b> left for warm low-pass or right for high-pass drops, dial in stereo <b>Echo</b> and <b>Room</b> reverb, and export everything—including sequencer bars and tails—via <b>Save WAV</b>. Use <b>↗ Share</b> to copy a link to your custom board and beat. On iPad, Share → Add to Home Screen for full offline play.</p>
+        </div>
+      </section>
+
       <p id="notice" class="notice" role="status" aria-live="polite"></p>
     </main>
-    <div id="pad-editor" class="editor-backdrop" hidden><section class="pad-editor" role="dialog" aria-modal="true" aria-labelledby="editor-title" tabindex="-1"><div class="editor-heading"><div><div class="eyebrow">PAD ASSIGNMENT</div><h2 id="editor-title">Edit pad 01</h2></div><button id="editor-close" aria-label="Close pad editor">×</button></div><label for="pad-instrument">INSTRUMENT</label><select id="pad-instrument"><option value="drums">Drum kit</option><option value="piano">Grand piano</option><option value="electric">Electric piano</option><option value="organ">Organ</option><option value="synth">Analog synth</option><option value="keys">Kalimba</option><option value="earshot">Earshot SFX</option></select><label for="pad-sound">SOUND / NOTE</label><select id="pad-sound"></select><div class="editor-actions"><button id="preview-pad">▷ Preview</button><button id="save-pad">Save pad</button></div><p>Saved to this mode’s layout on this device.</p></section></div>
-    <footer><span class="footer-credit"><a href="https://github.com/Leonxlnx/earshot" target="_blank" rel="noopener">Earshot ↗</a></span><span id="offline-status"><span class="tiny-dot"></span> OFFLINE PREPARING</span></footer>
+
+    <div id="pad-editor" class="editor-backdrop" hidden>
+      <section class="pad-editor" role="dialog" aria-modal="true" aria-labelledby="editor-title" tabindex="-1">
+        <div class="editor-heading">
+          <div>
+            <div class="eyebrow">PAD VOICE &amp; TRIM</div>
+            <h2 id="editor-title">Pad 01</h2>
+          </div>
+          <button id="editor-close" type="button" aria-label="Close pad editor">×</button>
+        </div>
+        <label for="pad-instrument">INSTRUMENT</label>
+        <select id="pad-instrument">
+          <option value="drums">Drum kit</option>
+          <option value="bass">808 &amp; Bass</option>
+          <option value="piano">Grand piano</option>
+          <option value="electric">Electric piano</option>
+          <option value="organ">Drawbar organ</option>
+          <option value="synth">Analog synth</option>
+          <option value="pad">Lush pad</option>
+          <option value="keys">Kalimba</option>
+          <option value="earshot">Earshot SFX</option>
+        </select>
+        <label for="pad-sound">SOUND / NOTE</label>
+        <select id="pad-sound"></select>
+        <div class="editor-sliders">
+          <div class="editor-slider">
+            <label for="pad-tune">PAD TUNE <output id="pad-tune-value">0 st</output></label>
+            <input id="pad-tune" type="range" min="-12" max="12" value="0">
+          </div>
+          <div class="editor-slider">
+            <label for="pad-gain">PAD LEVEL <output id="pad-gain-value">100%</output></label>
+            <input id="pad-gain" type="range" min="20" max="125" value="100">
+          </div>
+        </div>
+        <div class="editor-actions">
+          <button id="preview-pad" type="button">▷ Preview</button>
+          <button id="reset-pad" type="button">Default</button>
+          <button id="save-pad" type="button">Save pad</button>
+        </div>
+        <p>Saved to this mode’s layout on this device and included in shared links.</p>
+      </section>
+    </div>
+
+    <footer>
+      <span class="footer-credit">Synthesized DSP + <a href="https://github.com/Leonxlnx/earshot" target="_blank" rel="noopener">Earshot ↗</a></span>
+      <span id="offline-status"><span class="tiny-dot"></span> OFFLINE PREPARING</span>
+    </footer>
   </div>
   <noscript>This soundboard needs JavaScript enabled to play sounds.</noscript>
 </body>
